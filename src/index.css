@@ -1,0 +1,65 @@
+/* ── リセット ──────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: #f2f1ed;
+  color: #171715;
+  min-height: 100vh;
+}
+
+/* ── A3 横 印刷ページ ──────────────────────────────── */
+.page {
+  width: 420mm;
+  min-height: 290mm;
+  margin: 20px auto;
+  background: #ffffff;
+  padding: 11mm 13mm 9mm;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.14);
+}
+
+/* ── 印刷設定 ──────────────────────────────────────── */
+@media print {
+  /* コントロールパネル非表示 */
+  .no-print { display: none !important; }
+
+  /* 余白・スクロールリセット */
+  html, body {
+    width: 420mm;
+    height: auto;
+    overflow: visible;
+    background: #fff !important;
+  }
+
+  /* ページ全体を縮小してA3横（297mm高）に収める */
+  /* コンテンツ高 ≈ 349mm（印刷padding込み）→ 297/349 ≈ 0.851 */
+  html {
+    zoom: 85.1%;
+  }
+
+  /* ページ要素：zoom分を逆算して幅を拡大し、縮小後に420mmになるよう調整 */
+  .page {
+    margin: 0 !important;
+    box-shadow: none !important;
+    width: calc(420mm / 0.851) !important; /* 縮小後に420mm */
+    min-height: unset !important;
+    padding: 8mm 10mm 6mm !important;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* 背景グラフィック強制出力 */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+@page {
+  size: A3 landscape;
+  margin: 0;
+}
